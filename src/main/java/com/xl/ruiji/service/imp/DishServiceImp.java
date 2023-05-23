@@ -6,7 +6,6 @@ import com.xl.ruiji.dto.DishDto;
 import com.xl.ruiji.mapper.DishMapper;
 import com.xl.ruiji.pojo.Dish;
 import com.xl.ruiji.pojo.DishFlavor;
-import com.xl.ruiji.pojo.R;
 import com.xl.ruiji.service.DishFlavorService;
 import com.xl.ruiji.service.DishService;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +19,7 @@ import java.util.List;
 public class DishServiceImp extends ServiceImpl<DishMapper, Dish> implements DishService {
     @Autowired
     DishFlavorService dishFlavorService;
+
     @Override
     @Transactional
     public void dishWithFlavor(DishDto dishDto) {
@@ -33,7 +33,7 @@ public class DishServiceImp extends ServiceImpl<DishMapper, Dish> implements Dis
     }
 
     @Override
-    public R<DishDto> getDishWithFlavor(String id) {
+    public DishDto getDishWithFlavor(String id) {
         Dish dish = this.getById(id);
         LambdaQueryWrapper<DishFlavor> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(DishFlavor::getDishId,id);
@@ -41,7 +41,9 @@ public class DishServiceImp extends ServiceImpl<DishMapper, Dish> implements Dis
         DishDto dishDto = new DishDto();
         BeanUtils.copyProperties(dish,dishDto);
         dishDto.setFlavors(list);
-        return R.success(dishDto);
+
+
+        return dishDto;
     }
 
     @Override

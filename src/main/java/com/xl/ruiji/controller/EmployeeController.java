@@ -8,11 +8,12 @@ import com.xl.ruiji.service.EmpService;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
+
 
 
 
@@ -21,7 +22,11 @@ import java.time.LocalDateTime;
 @RestController
 public class EmployeeController {
     @Autowired
-    EmpService empService;
+    private EmpService empService;
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+
     @PostMapping("/login")
     public R<Employee> empLogin(HttpServletRequest httpServletRequest, @RequestBody Employee employee){
         String password = employee.getPassword();

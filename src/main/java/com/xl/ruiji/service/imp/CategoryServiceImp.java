@@ -28,7 +28,7 @@ public class CategoryServiceImp extends ServiceImpl<CategoryMapper, Category> im
         LambdaQueryWrapper<Setmeal> queryWrapper1 = new LambdaQueryWrapper<>();
         queryWrapper1.eq(Setmeal::getCategoryId,id);
 
-        int count = dishService.count() + setMealService.count();
+        int count = (int) (dishService.count() + setMealService.count());
 
         if (count > 0){
             throw new CustomException("已经关联套餐");
