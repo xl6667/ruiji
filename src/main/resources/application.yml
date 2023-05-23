@@ -8,6 +8,10 @@ spring:
     username: root
     #连接数据库的密码
     password: 123456
+  redis:
+    host: localhost
+    port: 6397
+    database: 0
 mybatis-plus:
   configuration:
     #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
