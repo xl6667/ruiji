@@ -11,6 +11,7 @@ import com.xl.ruiji.service.SetMealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,6 +59,7 @@ public class SetMealController {
         return R.success(setmealDtoPage);
     }
     @PostMapping
+
     public R<String> save(@RequestBody SetmealDto setmealDto){
         log.info("添加套餐");
         setMealService.saveSetmealDish(setmealDto);
@@ -65,6 +67,7 @@ public class SetMealController {
     }
     @DeleteMapping
     @Transactional
+    @CacheEvict(value = "setMealCache" ,allEntries = true)
     public R<String> delete(@RequestParam List<String> ids){
         log.info("删除套餐");
         setMealService.removeByIds(ids);
@@ -85,6 +88,8 @@ public class SetMealController {
         }
         return R.success("禁售成功");
     }
+
+
     @PostMapping("/status/1")
     public R<String> isStatus1(@RequestParam("ids") List<String> ids){
         for (String id:ids) {
@@ -102,6 +107,7 @@ public class SetMealController {
         return R.success(setMealDto);
     }
     @PutMapping
+    @CacheEvict(value = "setMealCache" ,allEntries = true)
     public R<String> put(@RequestBody SetmealDto setmealDto){
         log.info("修改套餐");
         setMealService.updateSetMealDto(setmealDto);

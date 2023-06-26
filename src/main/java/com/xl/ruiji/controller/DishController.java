@@ -4,10 +4,8 @@ package com.xl.ruiji.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xl.ruiji.dto.DishDto;
-
 import com.xl.ruiji.pojo.Category;
 import com.xl.ruiji.pojo.Dish;
-
 import com.xl.ruiji.pojo.DishFlavor;
 import com.xl.ruiji.pojo.R;
 import com.xl.ruiji.service.CategoryService;
@@ -19,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -114,8 +111,6 @@ public class DishController {
             String key = "Dish_"+ dish1.getCategoryId() + "_1";
             redisTemplate.delete(key);
         }
-
-
         return R.success("禁售成功");
     }
     @PostMapping("/status/1")
@@ -178,12 +173,15 @@ public class DishController {
         List<Dish> list = dishService.list(queryWrapper);
         dishDtos = new ArrayList<>();
 
+
         for (Dish dish1:list) {
             DishDto dishDto = new DishDto();
             if (categoryId!=null){
                dishDto.setName(categoryService.getById(categoryId).getName());
             }
+
             BeanUtils.copyProperties(dish1,dishDto);
+
             LambdaQueryWrapper<DishFlavor> queryWrapper1 =  new LambdaQueryWrapper<>();
             queryWrapper1.eq(DishFlavor::getDishId,dish1.getId());
             List<DishFlavor> flavors = dishFlavorService.list(queryWrapper1);
